@@ -2,7 +2,11 @@
 
 package lesson3.task1
 
+import lesson5.task1.subtractOf
+import kotlin.math.PI
+import kotlin.math.abs
 import kotlin.math.sqrt
+import kotlin.math.pow;
 
 /**
  * Пример
@@ -75,7 +79,23 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    return when (n) {
+        1 -> 1
+        2 -> 1
+        else -> {
+            var first = 1
+            var second = 1;
+            var current = 1;
+            for (i in 1..(n - 2)) {
+                current = first + second;
+                first = second;
+                second = current;
+            }
+            current;
+        }
+    }
+}
 
 /**
  * Простая
@@ -144,7 +164,21 @@ fun collatzSteps(x: Int): Int = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    var sum = 0.0;
+    var pow = 1;
+    val step = 2;
+    if (((x / PI) % 2) == 0.0) {
+        return 0.0;
+    }
+    do {
+        val subtractPow = pow + step;
+        val member = x.pow(pow) / factorial(pow) - x.pow(subtractPow) / factorial(subtractPow);
+        sum += member;
+        pow = subtractPow + step;
+    } while (abs(member) >= eps);
+    return sum;
+}
 
 /**
  * Средняя
@@ -198,6 +232,15 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  */
 fun squareSequenceDigit(n: Int): Int = TODO()
 
+
+fun countDigits(n: Double): Int {
+    return if (n < 10.0) {
+        1;
+    } else {
+        countDigits(n / 10) + 1;
+    }
+}
+
 /**
  * Сложная
  *
@@ -207,4 +250,22 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var currentLength = 0;
+    var fibNth = 1;
+    var prevLength = 0;
+    var currentFib = 1;
+    while (currentLength < n) {
+        prevLength = currentLength;
+        currentFib = fib(fibNth);
+        currentLength += countDigits(currentFib.toDouble())
+        fibNth++;
+    }
+    val index = n - prevLength;
+    var result = currentFib;
+    for (i in 0 until (countDigits(currentFib.toDouble()) - index)) {
+        result /= 10;
+    }
+
+    return result % 10;
+}

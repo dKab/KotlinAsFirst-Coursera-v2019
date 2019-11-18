@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import kotlin.math.sqrt
+import kotlin.math.pow
 
 /**
  * Пример
@@ -151,7 +152,17 @@ fun times(a: List<Int>, b: List<Int>): Int = TODO()
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int = TODO()
+fun polynom(p: List<Int>, x: Int): Int {
+    if (p.size === 0) {
+        return 0;
+    }
+    var power = 0;
+    return p.fold(0, { acc: Int, i: Int ->
+        val sum = acc + i * (x.toDouble().pow(power)).toInt();
+        power++;
+        sum;
+    });
+}
 
 /**
  * Средняя
@@ -163,7 +174,16 @@ fun polynom(p: List<Int>, x: Int): Int = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun accumulate(list: MutableList<Int>): MutableList<Int> = TODO()
+fun accumulate(list: MutableList<Int>): MutableList<Int> {
+    if (list.size == 0) {
+        return list;
+    }
+    for (i in (list.size - 1) downTo 1) {
+        val sum = list.subList(0, i).fold(list[i], { acc: Int, curr: Int -> acc + curr })
+        list[i] = sum
+    }
+    return list;
+}
 
 /**
  * Средняя
