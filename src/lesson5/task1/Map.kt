@@ -238,7 +238,43 @@ fun hasAnagrams(words: List<String>): Boolean = TODO()
  *          "Mikhail" to setOf("Sveta", "Marat")
  *        )
  */
-fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> = TODO()
+fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<String>> {
+    // get the list of keys for resulting Map (all the people there are)
+    val keys = mutableSetOf<String>()
+    for (set in friends.values) {
+        for (i in set) {
+            keys.add(i)
+        }
+    }
+
+    val result = mutableMapOf<String, Set<String>>();
+    for (person in keys union friends.keys) {
+        val acquaintances = mutableSetOf<String>();
+        depthFirstSearch(friends, person, acquaintances, person)
+        result[person] = acquaintances;
+    }
+    return result;
+}
+
+fun depthFirstSearch(
+    people: Map<String, Set<String>>,
+    name: String,
+    acquaintances: MutableSet<String>,
+    root: String,
+    visited: MutableSet<String> = mutableSetOf<String>()
+) {
+    val friends = people[name];
+    if (friends != null) {
+        for (friend in friends) {
+            if (friend !== root && !visited.contains(friend)) {
+                acquaintances.add(friend)
+                visited.add(friend)
+                depthFirstSearch(people, friend, acquaintances, root, visited);
+            }
+        }
+    }
+}
+
 
 /**
  * Сложная

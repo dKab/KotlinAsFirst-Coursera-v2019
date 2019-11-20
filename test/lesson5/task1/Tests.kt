@@ -292,6 +292,41 @@ class Tests {
                 )
             )
         )
+        assertEquals(
+            mapOf(
+                "Marat" to setOf("Mikhail", "Sveta", "Pavel", "Sergey", "Anton", "Dima", "Ian", "Andrei", "Sasha",
+                    "Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Sveta" to setOf("Marat", "Mikhail", "Pavel", "Sergey", "Anton", "Dima", "Ian", "Andrei", "Sasha",
+                    "Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Mikhail" to setOf("Sveta", "Marat", "Pavel", "Sergey", "Anton", "Dima", "Ian", "Andrei", "Sasha",
+                    "Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Pavel" to setOf("Sergey", "Anton", "Dima", "Ian", "Andrei", "Sasha", "Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Anton" to setOf("Dima", "Ian", "Andrei", "Sasha", "Dima", "Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Ian" to setOf("Andrei", "Sasha", "Dima", "Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Andrei" to setOf("Sasha", "Dima", "Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Dima" to setOf("Alena", "Petya", "Nastya", "Varya", "Sonya"),
+                "Alena" to setOf("Nastya", "Varya", "Sonya"),
+                "Sasha" to setOf(),
+                "Nastya" to setOf(),
+                "Varya" to setOf(),
+                "Sonya" to setOf(),
+                "Sergey" to setOf(),
+                "Petya" to setOf()
+            ),
+            propagateHandshakes(
+                mapOf(
+                    "Marat" to setOf("Mikhail", "Sveta"),
+                    "Sveta" to setOf("Marat", "Pavel"),
+                    "Mikhail" to setOf("Sveta"),
+                    "Pavel" to setOf("Sergey", "Anton"),
+                    "Anton" to setOf("Dima", "Ian"),
+                    "Ian" to setOf("Andrei"),
+                    "Andrei" to setOf("Sasha", "Dima"),
+                    "Dima" to setOf("Alena", "Petya"),
+                    "Alena" to setOf("Nastya", "Varya", "Sonya")
+                )
+            )
+        )
     }
 
     @Test
