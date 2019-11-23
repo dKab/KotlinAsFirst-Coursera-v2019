@@ -87,26 +87,25 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    val replacements = setOf(
-        "жы" to "жи",
-        "жЫ" to "жИ",
-        "шЫ" to "шИ",
-        "шы" to "ши",
-        "ЖЯ" to "ЖА",
-        "шЯ" to "шА",
-        "жю" to "жу",
-        "щю" to "щу",
-        "чя" to "ча",
-        "шю" to "шу",
-        "щю" to "шу",
-        "щя" to "ща",
-        "жя" to "жа",
-        "чю" to "чу",
-        "жЮ" to "жУ",
-        "ШЮ" to "ШУ",
-        "Шю" to "Шу"
+    val pairs = mapOf(
+        "я" to "а",
+        "Я" to "А",
+        "Ы" to "И",
+        "ы" to "и",
+        "ю" to "у",
+        "Ю" to "У"
     )
+    val firsts = setOf("ж", "Ж", "ч", "Ч", "ш", "Ш", "щ", "Щ");
+
+    val replacements = mutableSetOf<Pair<String, String>>();
+    for ((wrong, right) in pairs) {
+        for (letter in firsts) {
+            replacements.add(letter + wrong to letter + right);
+        }
+    }
+
     var text = File(inputName).readText();
+
     for ((wrong, right) in replacements) {
         text = text.replace(wrong, right);
     }
