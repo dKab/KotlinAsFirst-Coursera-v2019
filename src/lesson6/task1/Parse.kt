@@ -2,6 +2,8 @@
 
 package lesson6.task1
 
+import java.lang.Exception
+
 /**
  * Пример
  *
@@ -97,7 +99,34 @@ fun dateDigitToStr(digital: String): String = TODO()
  *
  * PS: Дополнительные примеры работы функции можно посмотреть в соответствующих тестах.
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    // first handle the ()
+    var result = "";
+    val parts = phone.split('(').toList();
+    if (parts.size > 1) {
+        val right = parts[1];
+        val inBetween = right.split(')').toList()[0];
+        if (inBetween.isEmpty()) {
+            return "";
+        }
+    }
+    loop@ for (char in phone) {
+        val str = char.toString();
+        val validChars = setOf("-", " ", "+", "(", ")")
+        try {
+            val digit = str.toInt();
+            result += digit;
+        } catch (e: Exception) {
+            if (str == "+" && result == "") {
+                result += str;
+            } else if (!validChars.contains(str)) {
+                return "";
+            }
+            continue@loop
+        }
+    }
+    return result;
+}
 
 /**
  * Средняя
@@ -109,7 +138,27 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    val jumpsSeparate = jumps.split(" ");
+    var best = -1;
+    var invalidInput = false;
+    loop@ for (jump in jumpsSeparate) {
+        val jumpLength = try {
+            jump.toInt();
+        } catch (e: Exception) {
+            if (jump != '%'.toString() && jump != '-'.toString()) {
+                invalidInput = true;
+                break@loop
+            }
+            -1;
+        }
+        if (jumpLength > best) {
+            best = jumpLength;
+        }
+    }
+
+    return if (invalidInput) -1 else best;
+}
 
 /**
  * Сложная
